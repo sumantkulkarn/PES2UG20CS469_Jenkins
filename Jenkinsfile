@@ -1,33 +1,24 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'g++ main/sample.cpp -o output'
-        build 'PES2UG20CS262-1'
-        echo 'Build Successful'
-      }
-    }
-    stage('Test') {
-      steps {
-        sh './output'
-        echo 'Testing Successful'
-      }
-    }
-    stage('Deploy') {
-      when {
-        expression {
-          currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'g++ -o PES2UG20CS469-1 try.cpp'
+                echo "Build Successful"
+            }
         }
-      }
-      steps {
-        echo 'Deployment Successful'
-      }
+        stage('Test') {
+            steps {
+                sh './PES2UG20CS469-1'
+            }
+        }
     }
-  }
-  post {
-    failure {
-      echo 'Pipeline failed'
+    post {
+        always {
+            echo 'Pipeline completed'
+        }
+        failure {
+            echo 'Pipeline failed'
+        }
     }
-  }
 }
